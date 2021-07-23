@@ -1,47 +1,22 @@
-# Mars Rover Problem Solution in .NET Core following ONION Architecture and Command Design Pattern
+There are five projects in which three are class library projects, one is a console application project and one is a Unit Test project. Let’s see each project mapping with onion architecture layers.
 
-MARS ROVERS
+MarsRoverProblemSolution.Data
+It is a class library project. It holds business related entities and enum related to the application. It represents the Domain Entities layer of the onion architecture. It’s a core and central part of the application.
 
-A squad of robotic rovers are to be landed by NASA on a plateau on Mars.
+2. MarsRoverProblemSolution.Repository
 
-This plateau, which is curiously rectangular, must be navigated by the rovers so that their on board cameras can get a complete view of the surrounding terrain to send back to Earth.
+It is a second class library project. Generally this layer contains all the database related activities like CRUD operations, but in this application layer I have used command design pattern to execute rover movement according to the command passed from service layer which I will talk about in the next point.
 
-A rover's position is represented by a combination of an x and y co-ordinates and a letter representing one of the four cardinal compass points. The plateau is divided up into a grid to simplify navigation. An example position might be 0, 0, N, which means the rover is in the bottom left corner and facing North.
+3. MarsRoverProblemSolution.Service
 
-In order to control a rover, NASA sends a simple string of letters. The possible letters are 'L', 'R' and 'M'. 'L' and 'R' makes the rover spin 90 degrees left or right respectively, without moving from its current spot.
+It is a third class library project. It holds business logic and interfaces. These interfaces communicate between UI and data access logic. As it communicates via interfaces, it builds applications that are loosely coupled. This project represents the Service layer of the onion architecture.
 
-'M' means move forward one grid point, and maintain the same heading.
+4. MarsRoverProblemSolution
 
-Assume that the square directly North from (x, y) is (x, y+1).
+It is a .NET Core 3.1 Console Application. It is the most external part of an application by which the end-user can interact with the application. It represents the UI layer of the onion architecture.
 
-# Input:
+5. MarsRoverProblemSolution.Tests
 
-The first line of input is the upper-right coordinates of the plateau, the lower-left coordinates are assumed to be 0,0.
+It is a .NET Core Test project which contains the unit tests for the application using xUnit framework.
 
-The rest of the input is information pertaining to the rovers that have been deployed. Each rover has two lines of input. The first line gives the rover's position, and the second line is a series of instructions telling the rover how to explore the plateau.
 
-The position is made up of two integers and a letter separated by spaces, corresponding to the x and y co-ordinates and the rover's orientation.
-
-Each rover will be finished sequentially, which means that the second rover won't start to move until the first one has finished moving.
-
-# Output:
-
-The output for each rover should be its final co-ordinates and heading.
-
-Test Input:
-
-5 5
-
-1 2 N
-
-LMLMLMLMM
-
-3 3 E
-
-MMRMMRMRRM
-
-Expected Output:
-
-1 3 N
-
-5 1 E
